@@ -1,13 +1,14 @@
-import http from 'http'
-import assert from 'assert'
+import { app, server } from '../src/index'
+import request from 'supertest'
 
-import '../src/index.js'
+describe('Boot Basic Server', () => {
+  after(() => {
+    server.close()
+  })
 
-describe('Example Node Server', () => {
-  it('should return 200', done => {
-    http.get('http://127.0.0.1:3000', res => {
-      assert.equal(200, res.statusCode)
-      done()
-    })
+  it('should return 200 when hitting the index', (done) => {
+    request(app)
+      .get('/')
+      .expect(200, done)
   })
 })
