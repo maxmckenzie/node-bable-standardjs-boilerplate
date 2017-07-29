@@ -1,8 +1,20 @@
-import http from 'http'
+import express from 'express'
+import path from 'path'
+const app = express()
 
-http.createServer((req, res) => {
-  res.writeHead(200, {'Content-Type': 'text/plain'})
-  res.end('Hello World\n')
-}).listen(3000, '127.0.0.1')
+app.use('/public', express.static(path.join(__dirname, 'public')))
 
-console.log('Server running at http://127.0.0.1:3000/')
+app.get('/', function (req, res) {
+  res.sendFile(process.cwd() + '/index.html')
+})
+
+const port = process.env.PORT || 3000
+
+const server = app.listen(port, () => {
+  console.log('running on http://127.0.0.1:' + port)
+})
+
+module.exports = {
+  server,
+  app
+}
